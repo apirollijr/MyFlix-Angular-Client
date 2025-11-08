@@ -1,0 +1,40 @@
+<mat-toolbar color="primary" class="navigation-toolbar">
+  <span class="app-title">
+    <mat-icon>movie</mat-icon>
+    myFlix
+  </span>
+  
+  <span class="spacer"></span>
+  
+  <div class="nav-buttons" *ngIf="isLoggedIn()">
+    <button mat-button (click)="goToMovies()">
+      <mat-icon>video_library</mat-icon>
+      Movies
+    </button>
+    
+    <button mat-button (click)="goToProfile()">
+      <mat-icon>person</mat-icon>
+      Profile
+    </button>
+    
+    <button mat-button [matMenuTriggerFor]="userMenu">
+      <mat-icon>account_circle</mat-icon>
+      {{ getCurrentUser()?.Username }}
+    </button>
+    
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item (click)="goToProfile()">
+        <mat-icon>settings</mat-icon>
+        Profile Settings
+      </button>
+      <button mat-menu-item (click)="logOut()">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
+    </mat-menu>
+  </div>
+  
+  <div class="nav-buttons" *ngIf="!isLoggedIn()">
+    <span class="welcome-text">Welcome to myFlix!</span>
+  </div>
+</mat-toolbar>

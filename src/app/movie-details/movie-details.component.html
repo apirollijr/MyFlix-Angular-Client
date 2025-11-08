@@ -1,0 +1,28 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ data.movie.Title }}</mat-card-title>
+  </mat-card-header>
+  
+  <img 
+    mat-card-image 
+    [src]="data.movie.ImagePath" 
+    [alt]="data.movie.Title"
+    style="max-height: 300px; object-fit: cover;">
+  
+  <mat-card-content>
+    <p><strong>Description:</strong></p>
+    <p>{{ data.movie.Description }}</p>
+    
+    <p><strong>Director:</strong> {{ data.movie.Director.Name }}</p>
+    
+    <p><strong>Genre:</strong> {{ data.movie.Genre.Name }}</p>
+    
+    <p *ngIf="data.movie.ReleaseYear"><strong>Release Year:</strong> {{ data.movie.ReleaseYear }}</p>
+    
+    <p *ngIf="data.movie.Rating"><strong>Rating:</strong> {{ data.movie.Rating }}</p>
+  </mat-card-content>
+  
+  <mat-card-actions>
+    <button mat-raised-button color="primary" mat-dialog-close>Close</button>
+  </mat-card-actions>
+</mat-card>

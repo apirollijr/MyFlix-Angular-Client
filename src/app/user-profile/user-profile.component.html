@@ -1,0 +1,89 @@
+<div class="profile-container">
+  <mat-card class="profile-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>person</mat-icon>
+        User Profile
+      </mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form>
+        <mat-form-field>
+          <mat-label>Username</mat-label>
+          <input
+            matInput
+            [(ngModel)]="userData.Username"
+            type="text"
+            name="Username"
+            required>
+        </mat-form-field>
+        
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [(ngModel)]="userData.Password"
+            type="password"
+            name="Password"
+            placeholder="Enter new password">
+        </mat-form-field>
+        
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            [(ngModel)]="userData.Email"
+            type="email"
+            name="Email"
+            required>
+        </mat-form-field>
+        
+        <mat-form-field>
+          <mat-label>Birthday</mat-label>
+          <input
+            matInput
+            [(ngModel)]="userData.Birthday"
+            type="date"
+            name="Birthday">
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+    
+    <mat-card-actions>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="editUser()">
+        <mat-icon>save</mat-icon>
+        Update Profile
+      </button>
+      
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="deleteUser()">
+        <mat-icon>delete</mat-icon>
+        Delete Account
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="favorites-card" *ngIf="favoriteMovies.length > 0">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>favorite</mat-icon>
+        Favorite Movies
+      </mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <div class="favorites-grid">
+        <div *ngFor="let movie of favoriteMovies" class="favorite-item">
+          <img [src]="movie.ImagePath" [alt]="movie.Title" class="favorite-image">
+          <h4>{{ movie.Title }}</h4>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

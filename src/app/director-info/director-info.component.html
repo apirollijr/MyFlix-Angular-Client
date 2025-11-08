@@ -1,0 +1,18 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ data.director.Name }}</mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content>
+    <p><strong>Biography:</strong></p>
+    <p>{{ data.director.Bio }}</p>
+    
+    <p><strong>Birth Year:</strong> {{ data.director.Birth }}</p>
+    
+    <p *ngIf="data.director.Death"><strong>Death Year:</strong> {{ data.director.Death }}</p>
+  </mat-card-content>
+  
+  <mat-card-actions>
+    <button mat-raised-button color="primary" mat-dialog-close>Close</button>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,33 @@
+<div class="welcome-container">
+  <mat-card class="welcome-card">
+    <mat-card-header>
+      <mat-card-title class="welcome-title">Welcome to myFlix!</mat-card-title>
+      <mat-card-subtitle>Your favorite movies, all in one place</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content class="welcome-content">
+      <p class="welcome-description">
+        Discover amazing movies, create your personal watchlist, and explore detailed information 
+        about your favorite films, directors, and genres.
+      </p>
+      
+      <div class="action-buttons">
+        <button 
+          mat-raised-button 
+          color="primary" 
+          class="welcome-button"
+          (click)="openUserRegistrationDialog()">
+          Sign Up
+        </button>
+        
+        <button 
+          mat-raised-button 
+          color="accent" 
+          class="welcome-button"
+          (click)="openUserLoginDialog()">
+          Login
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

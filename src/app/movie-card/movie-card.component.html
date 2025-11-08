@@ -1,0 +1,57 @@
+<div class="movie-container">
+  <mat-grid-list 
+    [cols]="getGridCols()" 
+    rowHeight="600px" 
+    gutterSize="16px">
+    <mat-grid-tile *ngFor="let movie of movies">
+      <mat-card class="movie-card">
+        <mat-card-header>
+          <mat-card-title class="movie-title">{{ movie.Title }}</mat-card-title>
+        </mat-card-header>
+        
+        <img 
+          mat-card-image 
+          [src]="movie.ImagePath" 
+          [alt]="movie.Title"
+          class="movie-image">
+        
+        <mat-card-content class="movie-content">
+          <p class="movie-description">{{ movie.Description }}</p>
+        </mat-card-content>
+        
+        <mat-card-actions class="movie-actions">
+          <button 
+            mat-button 
+            color="primary"
+            (click)="openGenreDialog(movie.Genre)">
+            <mat-icon>category</mat-icon>
+            Genre
+          </button>
+          
+          <button 
+            mat-button 
+            color="primary"
+            (click)="openDirectorDialog(movie.Director)">
+            <mat-icon>person</mat-icon>
+            Director
+          </button>
+          
+          <button 
+            mat-button 
+            color="primary"
+            (click)="openMovieDetailsDialog(movie)">
+            <mat-icon>info</mat-icon>
+            Details
+          </button>
+          
+          <button 
+            mat-icon-button 
+            [color]="isFavorite(movie._id) ? 'warn' : 'primary'"
+            (click)="isFavorite(movie._id) ? removeFromFavorites(movie._id) : addToFavorites(movie._id)">
+            <mat-icon>{{ isFavorite(movie._id) ? 'favorite' : 'favorite_border' }}</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

@@ -1,0 +1,54 @@
+.navigation-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.app-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-buttons button {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.welcome-text {
+  color: white;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .app-title {
+    font-size: 1.2rem;
+  }
+  
+  .nav-buttons button {
+    min-width: auto;
+    padding: 0 8px;
+  }
+  
+  .nav-buttons button .mat-icon {
+    margin-right: 0;
+  }
+  
+  .nav-buttons button span {
+    display: none;
+  }
+}
