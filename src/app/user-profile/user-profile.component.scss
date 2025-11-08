@@ -47,6 +47,7 @@ mat-card-actions button {
 
 .favorite-item {
   text-align: center;
+  position: relative;
 }
 
 .favorite-image {
@@ -61,6 +62,18 @@ mat-card-actions button {
   margin: 0.5rem 0 0 0;
   font-size: 0.9rem;
   color: #333;
+}
+
+.remove-favorite-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(4px);
+  
+  &:hover {
+    background: rgba(255, 255, 255, 1);
+  }
 }
 
 @media (max-width: 600px) {

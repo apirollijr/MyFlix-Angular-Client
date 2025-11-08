@@ -61,6 +61,28 @@ export class UserProfileComponent implements OnInit {
   }
 
   /**
+   * Removes a movie from favorites
+   */
+  removeFromFavorites(movieId: string): void {
+    console.log('Removing movie from favorites:', movieId);
+    this.fetchApiData.deleteFavouriteMovie(movieId).subscribe((resp: any) => {
+      console.log('Successfully removed from favorites:', resp);
+      this.snackBar.open('Movie removed from favorites!', 'OK', {
+        duration: 2000
+      });
+      // Update the favorites list
+      this.favoriteMovies = this.favoriteMovies.filter(movie => movie._id !== movieId);
+      // Update the user object
+      this.user.FavoriteMovies = this.user.FavoriteMovies.filter((id: string) => id !== movieId);
+    }, (error) => {
+      console.error('Error removing from favorites:', error);
+      this.snackBar.open('Failed to remove movie from favorites', 'OK', {
+        duration: 2000
+      });
+    });
+  }
+
+  /**
    * Updates user information
    */
   editUser(): void {

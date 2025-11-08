@@ -76,7 +76,8 @@ export class MovieCardComponent implements OnInit, OnDestroy {
    */
   getFavoriteMovies(): void {
     this.fetchApiData.getFavouriteMovies().subscribe((resp: any) => {
-      this.favoriteMovies = resp;
+      this.favoriteMovies = resp || [];
+      console.log('Favorite movie IDs:', this.favoriteMovies); // Debug log
     });
   }
 
@@ -95,7 +96,13 @@ export class MovieCardComponent implements OnInit, OnDestroy {
       this.snackBar.open('Movie added to favorites!', 'OK', {
         duration: 2000
       });
-      this.getFavoriteMovies(); // Refresh favorites
+      this.favoriteMovies.push(movieId); // Update local array immediately
+      this.getFavoriteMovies(); // Refresh favorites from server
+    }, (error) => {
+      console.error('Error adding to favorites:', error);
+      this.snackBar.open('Failed to add movie to favorites', 'OK', {
+        duration: 2000
+      });
     });
   }
 
@@ -107,7 +114,14 @@ export class MovieCardComponent implements OnInit, OnDestroy {
       this.snackBar.open('Movie removed from favorites!', 'OK', {
         duration: 2000
       });
-      this.getFavoriteMovies(); // Refresh favorites
+      // Update local array immediately
+      this.favoriteMovies = this.favoriteMovies.filter(id => id !== movieId);
+      this.getFavoriteMovies(); // Refresh favorites from server
+    }, (error) => {
+      console.error('Error removing from favorites:', error);
+      this.snackBar.open('Failed to remove movie from favorites', 'OK', {
+        duration: 2000
+      });
     });
   }
 

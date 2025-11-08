@@ -82,6 +82,13 @@
         <div *ngFor="let movie of favoriteMovies" class="favorite-item">
           <img [src]="movie.ImagePath" [alt]="movie.Title" class="favorite-image">
           <h4>{{ movie.Title }}</h4>
+          <button 
+            mat-icon-button 
+            color="warn"
+            (click)="removeFromFavorites(movie._id)"
+            class="remove-favorite-btn">
+            <mat-icon>delete</mat-icon>
+          </button>
         </div>
       </div>
     </mat-card-content>
