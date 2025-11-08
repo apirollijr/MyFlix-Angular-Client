@@ -102,6 +102,41 @@ ng build --prod
 
 The build artifacts will be stored in the `dist/` directory.
 
+### GitHub Pages Deployment
+
+This project is configured for deployment to GitHub Pages using the `docs/` directory:
+
+1. **Build for GitHub Pages**:
+
+```bash
+ng build --configuration production --base-href "/MyFlix-Angular-Client/"
+```
+
+2. **Copy build to docs directory**:
+
+```bash
+cp -r dist/myflix-angular-client/* docs/
+```
+
+3. **Commit and push**:
+
+```bash
+git add docs/
+git commit -m "Deploy to GitHub Pages"
+git push origin main
+```
+
+4. **Configure GitHub Pages**:
+   - Go to your repository settings on GitHub
+   - Navigate to Pages section
+   - Set source to "Deploy from a branch"
+   - Select "main" branch and "/docs" folder
+   - Save settings
+
+The `docs/` directory contains the production build of the application and serves as the source for GitHub Pages hosting. This allows the application to be publicly accessible at your GitHub Pages URL.
+
+**Live Demo**: [View the deployed application](https://yourusername.github.io/MyFlix-Angular-Client/)
+
 ## Development
 
 ### Code Scaffolding
@@ -144,6 +179,14 @@ src/
 ├── index.html                       # Main HTML file
 ├── main.ts                         # Application bootstrap
 └── styles.scss                     # Global styles
+
+docs/                                # GitHub Pages deployment directory
+├── index.csr.html                   # Production build entry point
+├── main-*.js                        # Bundled application code
+├── styles-*.css                     # Compiled styles
+└── */                               # Route-specific assets
+
+dist/                                # Local build output directory
 ```
 
 ## API Service
