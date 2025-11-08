@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { FetchApiDataService } from '../fetch-api-data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -34,11 +35,14 @@ export class UserProfileComponent implements OnInit {
   constructor(
     public fetchApiData: FetchApiDataService,
     public snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   ngOnInit(): void {
-    this.getUser();
+    if (isPlatformBrowser(this.platformId)) {
+      this.getUser();
+    }
   }
 
   /**
@@ -61,7 +65,9 @@ export class UserProfileComponent implements OnInit {
    */
   editUser(): void {
     this.fetchApiData.editUser(this.userData).subscribe((result) => {
-      localStorage.setItem('user', JSON.stringify(result));
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.setItem('user', JSON.stringify(result));
+      }
       this.snackBar.open('User updated successfully!', 'OK', {
         duration: 2000
       });
@@ -78,7 +84,9 @@ export class UserProfileComponent implements OnInit {
   deleteUser(): void {
     if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
       this.fetchApiData.deleteUser().subscribe((result) => {
-        localStorage.clear();
+        if (isPlatformBrowser(this.platformId)) {
+          localStorage.clear();
+        }
         this.router.navigate(['welcome']);
         this.snackBar.open('Account deleted successfully', 'OK', {
           duration: 2000

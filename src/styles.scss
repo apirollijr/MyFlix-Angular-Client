@@ -1,4 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body { 
+  height: 100%; 
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+body { 
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
+
+/* Global responsive styles */
+* {
+  box-sizing: border-box;
+}
+
+/* Material Dialog responsive styles */
+.mat-mdc-dialog-container {
+  max-width: 90vw !important;
+  max-height: 90vh !important;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .mat-mdc-dialog-container {
+    margin: 1rem !important;
+    max-width: calc(100vw - 2rem) !important;
+  }
+  
+  .mat-mdc-card {
+    margin: 0.5rem;
+  }
+  
+  .mat-mdc-form-field {
+    width: 100%;
+  }
+}
+
+/* Small mobile adjustments */
+@media (max-width: 480px) {
+  .mat-mdc-dialog-container {
+    margin: 0.5rem !important;
+    max-width: calc(100vw - 1rem) !important;
+  }
+}

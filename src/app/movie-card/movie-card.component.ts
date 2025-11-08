@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { FetchApiDataService } from '../fetch-api-data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -24,20 +25,40 @@ import { MovieDetailsComponent } from '../movie-details/movie-details.component'
   templateUrl: './movie-card.component.html',
   styleUrl: './movie-card.component.scss'
 })
-export class MovieCardComponent implements OnInit {
+export class MovieCardComponent implements OnInit, OnDestroy {
   movies: any[] = [];
   favoriteMovies: any[] = [];
+  gridCols: number = 4;
+  private resizeListener?: () => void;
 
   constructor(
     public fetchApiData: FetchApiDataService,
     public dialog: MatDialog,
     public snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   ngOnInit(): void {
-    this.getMovies();
-    this.getFavoriteMovies();
+    if (isPlatformBrowser(this.platformId)) {
+      this.getMovies();
+      this.getFavoriteMovies();
+      this.updateGridCols();
+      
+      // Create and store the resize listener
+      this.resizeListener = () => this.updateGridCols();
+      window.addEventListener('resize', this.resizeListener);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (isPlatformBrowser(this.platformId) && this.resizeListener) {
+      window.removeEventListener('resize', this.resizeListener);
+    }
+  }
+
+  private updateGridCols(): void {
+    this.gridCols = this.getGridCols();
   }
 
   /**
@@ -125,10 +146,9 @@ export class MovieCardComponent implements OnInit {
    * Gets number of columns based on screen size
    */
   getGridCols(): number {
-    if (window.innerWidth < 600) return 1;
-    if (window.innerWidth < 900) return 2;
-    if (window.innerWidth < 1200) return 3;
-    return 4;
+    if (window.innerWidth <= 640) return 1;  // Phone - single column
+    if (window.innerWidth <= 1024) return 2; // Tablet - two columns
+    return 4; // Desktop - four columns
   }
 
 }

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,7 +21,10 @@ import { CommonModule } from '@angular/common';
 })
 export class NavigationBarComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
 
   ngOnInit(): void {
   }
@@ -29,6 +33,9 @@ export class NavigationBarComponent implements OnInit {
    * Checks if user is logged in
    */
   isLoggedIn(): boolean {
+    if (!isPlatformBrowser(this.platformId)) {
+      return false;
+    }
     return !!localStorage.getItem('token');
   }
 
@@ -36,6 +43,9 @@ export class NavigationBarComponent implements OnInit {
    * Gets current user
    */
   getCurrentUser(): any {
+    if (!isPlatformBrowser(this.platformId)) {
+      return null;
+    }
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
   }
@@ -58,7 +68,9 @@ export class NavigationBarComponent implements OnInit {
    * Logs out user
    */
   logOut(): void {
-    localStorage.clear();
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.clear();
+    }
     this.router.navigate(['welcome']);
   }
 
