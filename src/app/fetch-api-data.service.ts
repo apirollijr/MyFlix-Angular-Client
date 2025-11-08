@@ -155,20 +155,77 @@ export class FetchApiDataService {
   }
 
   /**
-   * Making the api call for the add a movie to favourite movies endpoint
-   * @param movieId - Movie ID to add to favorites
+   * Making the api call for the add to favorite movies endpoint
+   * @param movieId - The ID of the movie to add to favorites
    * @returns Observable for the API response
    */
   public addFavouriteMovie(movieId: string): Observable<any> {
     const user = JSON.parse(this.getFromStorage('user') || '{}');
     const token = this.getFromStorage('token');
-    return this.http.post(apiUrl + 'users/' + user.Username + '/movies/' + movieId, {}, {
+    
+    const url = apiUrl + 'users/' + user.Username + '/favorites/' + movieId;
+    
+    console.log('=== ADD FAVORITE API CALL (API Doc Compliant) ===');
+    console.log('Expected API format: POST /users/:username/favorites/:movieID');
+    console.log('Constructed URL:', url);
+    console.log('API Base URL:', apiUrl);
+    console.log('Username from storage:', user.Username);
+    console.log('Movie ID to add:', movieId);
+    console.log('Movie ID type:', typeof movieId);
+    console.log('Movie ID length:', movieId?.length);
+    console.log('Token exists:', !!token);
+    console.log('Token length:', token?.length);
+    console.log('User object keys:', Object.keys(user || {}));
+    console.log('Full user object:', user);
+    
+    // Validate required data before making request
+    if (!user.Username) {
+      console.error('❌ ERROR: No username found in storage!');
+      return throwError(() => new Error('No username found in local storage'));
+    }
+    
+    if (!token) {
+      console.error('❌ ERROR: No token found in storage!');
+      return throwError(() => new Error('No authentication token found'));
+    }
+    
+    if (!movieId) {
+      console.error('❌ ERROR: No movie ID provided!');
+      return throwError(() => new Error('Movie ID is required'));
+    }
+    
+    console.log('✅ All required data present, making API call...');
+    console.log('================================================');
+    
+    return this.http.post(url, {}, {
       headers: new HttpHeaders({
-        Authorization: 'Bearer ' + token,
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
       })
     }).pipe(
-      map(this.extractResponseData),
-      catchError(this.handleError)
+      map((response) => {
+        console.log('✅ Success response:', response);
+        return this.extractResponseData(response);
+      }),
+      catchError((error) => {
+        console.error('❌ API Error details:');
+        console.error('Status:', error.status);
+        console.error('Status Text:', error.statusText);
+        console.error('Error URL:', error.url);
+        console.error('Error body:', error.error);
+        console.error('Response headers:', error.headers);
+        
+        // Additional debugging for 404 errors
+        if (error.status === 404) {
+          console.error('🔍 404 DEBUGGING:');
+          console.error('- Check if username exists in database:', user.Username);
+          console.error('- Check if movie ID format is correct:', movieId);
+          console.error('- Verify API base URL is correct:', apiUrl);
+          console.error('- Expected endpoint: POST /users/' + user.Username + '/favorites/' + movieId);
+        }
+        
+        return this.handleError(error);
+      })
     );
   }
 
@@ -215,7 +272,7 @@ export class FetchApiDataService {
   public deleteFavouriteMovie(movieId: string): Observable<any> {
     const user = JSON.parse(this.getFromStorage('user') || '{}');
     const token = this.getFromStorage('token');
-    return this.http.delete(apiUrl + 'users/' + user.Username + '/movies/' + movieId, {
+    return this.http.delete(apiUrl + 'users/' + user.Username + '/favorites/' + movieId, {
       headers: new HttpHeaders({
         Authorization: 'Bearer ' + token,
       })
@@ -233,14 +290,18 @@ export class FetchApiDataService {
 
   // Error handling
   private handleError(error: HttpErrorResponse): any {
+    console.error('=== HTTP ERROR DETAILS ===');
     if (error.error instanceof ErrorEvent) {
-      console.error('Some error occurred:', error.error.message);
+      console.error('Client-side error:', error.error.message);
     } else {
-      console.error(
-        `Error Status code ${error.status}, ` +
-        `Error body is: ${error.error}`
-      );
+      console.error('Server-side error:');
+      console.error('Status Code:', error.status);
+      console.error('Status Text:', error.statusText);
+      console.error('Error Body:', error.error);
+      console.error('URL:', error.url);
+      console.error('Headers:', error.headers);
     }
-    return throwError('Something bad happened; please try again later.');
+    console.error('==========================');
+    return throwError(() => error);
   }
 }

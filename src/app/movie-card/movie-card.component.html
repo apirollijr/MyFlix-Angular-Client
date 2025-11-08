@@ -9,11 +9,29 @@
           <mat-card-title class="movie-title">{{ movie.Title }}</mat-card-title>
         </mat-card-header>
         
-        <img 
-          mat-card-image 
-          [src]="movie.ImagePath" 
-          [alt]="movie.Title"
-          class="movie-image">
+        <div class="movie-image-container">
+          <img 
+            mat-card-image 
+            [src]="movie.ImagePath" 
+            [alt]="movie.Title"
+            class="movie-image">
+          
+          <!-- Heart button overlay -->
+          <button 
+            *ngIf="movie._id"
+            mat-icon-button 
+            class="heart-overlay"
+            [class.favorite-active]="isFavorite(movie._id)"
+            (click)="$event.stopPropagation(); isFavorite(movie._id) ? removeFromFavorites(movie._id) : addToFavorites(movie._id)"
+            [attr.aria-label]="'Toggle favorite for ' + movie.Title">
+            <mat-icon>{{ isFavorite(movie._id) ? 'favorite' : 'favorite_border' }}</mat-icon>
+          </button>
+          
+          <!-- Debug: Show warning if movie has no _id -->
+          <span *ngIf="!movie._id" class="debug-warning-overlay">
+            ⚠️ No ID
+          </span>
+        </div>
         
         <mat-card-content class="movie-content">
           <p class="movie-description">{{ movie.Description }}</p>
@@ -42,13 +60,6 @@
             (click)="openMovieDetailsDialog(movie)">
             <mat-icon>info</mat-icon>
             Details
-          </button>
-          
-          <button 
-            mat-icon-button 
-            [color]="isFavorite(movie._id) ? 'warn' : 'primary'"
-            (click)="isFavorite(movie._id) ? removeFromFavorites(movie._id) : addToFavorites(movie._id)">
-            <mat-icon>{{ isFavorite(movie._id) ? 'favorite' : 'favorite_border' }}</mat-icon>
           </button>
         </mat-card-actions>
       </mat-card>
