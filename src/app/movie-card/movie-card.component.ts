@@ -146,6 +146,9 @@ export class MovieCardComponent implements OnInit, OnDestroy {
    * Gets number of columns based on screen size
    */
   getGridCols(): number {
+    if (!isPlatformBrowser(this.platformId)) {
+      return 4; // Default for SSR
+    }
     if (window.innerWidth <= 640) return 1;  // Phone - single column
     if (window.innerWidth <= 1024) return 2; // Tablet - two columns
     return 4; // Desktop - four columns
